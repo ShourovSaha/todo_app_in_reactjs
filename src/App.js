@@ -2,7 +2,7 @@
 // import './App.css';
 
 import { Component } from "react";
-
+import {TodoBanner} from "./TodoBanner.Js";
 // function App() {
 //   return (
 //     <div className="bg-primary text-white text-center p-2">
@@ -53,7 +53,7 @@ export default class App extends Component {
 
   togolTodo = (todoItem) => this.setState(
     {
-      todoItem: this.state.todoItems
+      todoItems: this.state.todoItems
         .map(item => item.action === todoItem.action ?
           { ...item, isDone: !item.isDone } : item)
     }
@@ -63,9 +63,7 @@ export default class App extends Component {
     <tr key={item.action}>
       <td>{item.action}</td>
       <td>
-        <input type="checkbox" checked={item.isDone} onChange={this.togolTodo(item)}>
-
-        </input>
+        <input type="checkbox" checked={item.isDone} onChange={() => this.togolTodo(item)} />
       </td>
     </tr>
   );
@@ -73,10 +71,12 @@ export default class App extends Component {
 
   render = () =>
     <div>
-      <div className="bg-primary text-white text-center p-2">
-        <h4>todo list of {this.state.userName}</h4>
+      {/* <div className="bg-primary text-white text-center p-2">
+        <h4>todo list of {this.state.userName}
         ({this.state.todoItems.filter(t => !t.isDone).length} items to do)
-      </div>
+        </h4>
+      </div> */}
+      <TodoBanner name={this.state.userName} todoItems={this.state.todoItems} />
 
       <div className="container-fluid">
         <div className="my-1">
