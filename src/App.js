@@ -1,24 +1,13 @@
-// import logo from './logo.svg';
-// import './App.css';
+import { Component } from "react";
+import { TodoBanner } from "./todoBanner";
 
-import Component from "react";
-//import TodoBanner from "./TodoBanner";
-// function App() {
-//   return (
-//     <div className="bg-primary text-white text-center p-2">
-//       <h4>todo list</h4>
-//     </div>
-//   );
-// }
-
-// export default App;
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      userName: "Adama",
+      userName: "Adam",
       todoItems: [
         { action: "Do excrcise", isDone: false },
         { action: "Do breakfast", isDone: false },
@@ -71,12 +60,9 @@ export default class App extends Component {
 
   render = () =>
     <div>
-      {/* <div className="bg-primary text-white text-center p-2">
-        <h4>todo list of {this.state.userName}
-        ({this.state.todoItems.filter(t => !t.isDone).length} items to do)
-        </h4>
-      </div> */}
-      {/* <TodoBanner name={this.state.userName} todoItems={this.state.todoItems} /> */}
+      <div className="bg-primary text-white text-center p-2">
+        <TodoBanner userName={this.state.userName} todoItems={this.state.todoItems} />
+      </div>
 
       <div className="container-fluid">
         <div className="my-1">
