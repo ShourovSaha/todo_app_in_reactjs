@@ -1,8 +1,8 @@
 // import logo from './logo.svg';
 // import './App.css';
 
-import { Component } from "react";
-import {TodoBanner} from "./TodoBanner.Js";
+import Component from "react";
+//import TodoBanner from "./TodoBanner";
 // function App() {
 //   return (
 //     <div className="bg-primary text-white text-center p-2">
@@ -76,7 +76,7 @@ export default class App extends Component {
         ({this.state.todoItems.filter(t => !t.isDone).length} items to do)
         </h4>
       </div> */}
-      <TodoBanner name={this.state.userName} todoItems={this.state.todoItems} />
+      {/* <TodoBanner name={this.state.userName} todoItems={this.state.todoItems} /> */}
 
       <div className="container-fluid">
         <div className="my-1">
