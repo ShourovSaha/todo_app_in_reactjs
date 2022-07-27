@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { TodoBanner } from "./todoBanner";
-
+import { TodoListTable } from "./todoListTable";
+import { TodoCreator } from "./todoCreator";
 
 export default class App extends Component {
   constructor(props) {
@@ -14,22 +15,16 @@ export default class App extends Component {
         { action: "Do Study", isDone: false },
         { action: "Prepare for work", isDone: true },
         { action: "Movie watch", isDone: false }
-      ],
-      newItemText: ""
+      ]
     }
   }
 
-  updateNewTextValue = (event) => {
-    this.setState({ newItemText: event.target.value });
-  }
-
-  createNewTodoIteam = () => {
+  createNewTodoIteam = (todoTask) => {
     if (!this.state.todoItems
       .find(item => item.action === this.state.newItemText)) {
       this.setState({
         todoItems: [...this.state.todoItems,
-        { action: this.state.newItemText, isDone: false }],
-        newItemText: ""
+        { action: todoTask, isDone: false }]
       })
     }
   }
@@ -49,12 +44,7 @@ export default class App extends Component {
   );
 
   todoTableRows = () => this.state.todoItems.map(item =>
-    <tr key={item.action}>
-      <td>{item.action}</td>
-      <td>
-        <input type="checkbox" checked={item.isDone} onChange={() => this.togolTodo(item)} />
-      </td>
-    </tr>
+    <TodoListTable item={item} callback={this.togolTodo} />
   );
 
 
@@ -65,27 +55,18 @@ export default class App extends Component {
       </div>
 
       <div className="container-fluid">
-        <div className="my-1">
-          <input className="form-control"
-            value={this.state.newItemText}
-            onChange={this.updateNewTextValue}
-          />
-          <button className="btn btn-primary mt-1"
-            onClick={this.createNewTodoIteam}>
-            Add
-          </button>
-          <table className="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Task description</th>
-                <th>Done</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.todoTableRows()}
-            </tbody>
-          </table>
-        </div>
+        <TodoCreator callback={this.createNewTodoIteam} />
+        <table className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Task description</th>
+              <th>Done</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.todoTableRows()}
+          </tbody>
+        </table>
       </div>
     </div>
 }
