@@ -2,6 +2,7 @@ import { Component } from "react";
 import { TodoBanner } from "./todoBanner";
 import { TodoListTable } from "./todoListTable";
 import { TodoCreator } from "./todoCreator";
+import {TodoTaskVisibility} from "./todoTaskVisibility";
 
 export default class App extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ export default class App extends Component {
         { action: "Do Study", isDone: false },
         { action: "Prepare for work", isDone: true },
         { action: "Movie watch", isDone: false }
-      ]
+      ],
+      showCompletedTodo: true
     }
   }
 
@@ -67,6 +69,25 @@ export default class App extends Component {
             {this.todoTableRows()}
           </tbody>
         </table>
+        <div>
+          <TodoTaskVisibility TodoTaskVisibilityDescription = "Completed Task"
+            isChecked = {this.state.showCompletedTodo}
+            callback = {(check) => this.setState({showCompletedTodo: check})}
+          />
+        </div>
+        {
+          this.state.showCompletedTodo &&
+          <table className="table table-striped table-bordared">
+            <thead>
+              <tr>
+                <th>Descriptoin</th> <th>Done</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.todoTableRows()}
+            </tbody>
+          </table>
+        }
       </div>
     </div>
 }
