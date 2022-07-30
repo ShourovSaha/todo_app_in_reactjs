@@ -2,7 +2,7 @@ import { Component } from "react";
 import { TodoBanner } from "./todoBanner";
 import { TodoListTable } from "./todoListTable";
 import { TodoCreator } from "./todoCreator";
-import {TodoTaskVisibility} from "./todoTaskVisibility";
+import { TodoTaskVisibility } from "./todoTaskVisibility";
 
 export default class App extends Component {
   constructor(props) {
@@ -21,15 +21,31 @@ export default class App extends Component {
     }
   }
 
-  createNewTodoIteam = (todoTask) => {
-    if (!this.state.todoItems
-      .find(item => item.action === this.state.newItemText)) {
+  createNewTodoItem = (todoTask) => {
+    if (!this.state.todoItems.find(item => item.action === todoTask)) {
       this.setState({
         todoItems: [...this.state.todoItems,
         { action: todoTask, isDone: false }]
-      })
+      }, () => localStorage.setItem("todoTask", JSON.stringify(this.state)));
     }
   }
+
+  componentDidMount = () => {
+    let todoData = localStorage.getItem("todoTask");
+    this.setState(todoData != null ? JSON.parse(todoData) :
+      {
+        userName: "Adam",
+        todoItems: [
+          { action: "Do excrcise", isDone: false },
+          { action: "Do breakfast", isDone: false },
+          { action: "Do Study", isDone: false },
+          { action: "Prepare for work", isDone: true },
+          { action: "Movie watch", isDone: false }
+        ],
+        showCompletedTodo: true
+      })
+  }
+
 
   changeStateData = () => {
     this.setState({
@@ -45,19 +61,21 @@ export default class App extends Component {
     }
   );
 
-  todoTableRows = () => this.state.todoItems.map(item =>
-    <TodoListTable item={item} callback={this.togolTodo} />
-  );
+  todoTableRows = (isTaskDone) => this.state.todoItems
+    .filter(item => item.isDone === isTaskDone)
+    .map(item =>
+      <TodoListTable key={item.action} item={item} callback={this.togolTodo} />
+    );
 
 
   render = () =>
     <div>
       <div className="bg-primary text-white text-center p-2">
-        <TodoBanner userName={this.state.userName} todoItems={this.state.todoItems} />
+        <TodoBanner userName={this.state.userName} unDoneTaskCount={this.state.todoItems.filter(item => !item.isDone).length} />
       </div>
 
       <div className="container-fluid">
-        <TodoCreator callback={this.createNewTodoIteam} />
+        <TodoCreator callback={this.createNewTodoItem} />
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
@@ -66,13 +84,13 @@ export default class App extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.todoTableRows()}
+            {this.todoTableRows(false)}
           </tbody>
         </table>
         <div>
-          <TodoTaskVisibility TodoTaskVisibilityDescription = "Completed Task"
-            isChecked = {this.state.showCompletedTodo}
-            callback = {(check) => this.setState({showCompletedTodo: check})}
+          <TodoTaskVisibility TodoTaskVisibilityDescription="Completed Task"
+            isChecked={this.state.showCompletedTodo}
+            callback={(check) => this.setState({ showCompletedTodo: check })}
           />
         </div>
         {
@@ -84,7 +102,7 @@ export default class App extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.todoTableRows()}
+              {this.todoTableRows(true)}
             </tbody>
           </table>
         }
